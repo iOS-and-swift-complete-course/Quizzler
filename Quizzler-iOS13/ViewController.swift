@@ -16,15 +16,39 @@ class ViewController: UIViewController {
     @IBOutlet weak var trueButton: UIButton!
     @IBOutlet weak var falseButton: UIButton!
     
+    var questionNumber = 0
     
+    let quiz = [
+        Question(text: "The world is round", answer: true),
+        Question(text: "Chris is cool", answer: true),
+        Question(text: "Smurfs are red", answer: false)
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        questionLabel.text = quiz[0].text
+        progressBar.progress = 0
     }
 
     @IBAction func answerButtonClicked(_ sender: UIButton) {
+        let trueButtonClicked = sender.tag == 0
+        
+        if trueButtonClicked != quiz[questionNumber].answer {
+            return
+        }
+        
+        questionNumber += 1
+        if questionNumber >= quiz.count {
+            questionNumber = 0
+        }
+        
+        progressBar.progress = Float(questionNumber) / Float(quiz.count)
+        questionLabel.text = quiz[questionNumber].text
     }
-    
+}
+
+struct Question {
+    let text: String
+    let answer: Bool
 }
 
